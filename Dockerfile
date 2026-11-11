@@ -17,5 +17,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копирование кода
 COPY . .
 
-# Применение миграций и запуск бота
-CMD sh -c "alembic upgrade head && python src/bot/main.py"
+# Запуск бота (миграции будут применены автоматически при первом запуске)
+CMD ["python", "src/bot/main.py"]
