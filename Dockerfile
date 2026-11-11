@@ -17,5 +17,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Копирование кода
 COPY . .
 
-# Запуск бота (миграции будут применены автоматически при первом запуске)
-CMD ["python", "src/bot/main.py"]
+# Добавить /app в PYTHONPATH
+ENV PYTHONPATH=/app
+
+# Запуск бота
+CMD ["python", "-m", "src.bot.main"]
