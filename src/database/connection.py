@@ -1,6 +1,7 @@
 """Подключение к базе данных."""
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
+import os
 
 from sqlalchemy.ext.asyncio import (
     AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
@@ -46,5 +47,17 @@ class Database:
         await self.engine.dispose()
 
 
-# Глобальный экземпляр
-db = Database(settings.database_url)
+# Глобальный экземпляр (lazy initialization)
+_db: Database | None = None
+
+
+def get_db() -> Database:
+    """Получить экземпляр БД (ленивая инициализация)."""
+    global _db
+    if _db is None:
+        _db = Database(settings.database_url)
+    return _db
+
+
+# Для обратной совместимости
+db = None  # Будет инициализирован при первом обращении
